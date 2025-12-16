@@ -1,6 +1,116 @@
 @SkillService_HostAddress = http://localhost:5212
+@EmployeeService_HostAddress = http://localhost:5110
 
-GET {{SkillService_HostAddress}}/weatherforecast/
+### ============================================
+### SKILL MANAGEMENT
+### ============================================
+
+### Get All Skills
+GET {{SkillService_HostAddress}}/skills
 Accept: application/json
+
+###
+
+### Create a New Skill
+POST {{SkillService_HostAddress}}/skills
+Content-Type: application/json
+
+{
+  "skillName": "TypeScript"
+}
+
+###
+
+### ============================================
+### EMPLOYEE SKILL RATING
+### ============================================
+
+### Rate a Skill for an Employee
+# Replace {employeeId} with actual GUID from EmployeeService
+# Replace {skillId} with actual GUID from skills list (e.g., C# = 11111111-1111-1111-1111-111111111111)
+POST {{SkillService_HostAddress}}/employees/00000000-0000-0000-0000-000000000000/skills
+Content-Type: application/json
+
+{
+  "skillId": "11111111-1111-1111-1111-111111111111",
+  "rating": 4,
+  "trainingNeeded": false
+}
+
+###
+
+### ============================================
+### SEARCH
+### ============================================
+
+### Search by Skill Name and Rating
+GET {{SkillService_HostAddress}}/skills/search?skill=C%23&rating=3
+Accept: application/json
+
+###
+
+### Search by Rating Only
+GET {{SkillService_HostAddress}}/skills/search?rating=4
+Accept: application/json
+
+###
+
+### Search by Skill Name Only
+GET {{SkillService_HostAddress}}/skills/search?skill=Java
+Accept: application/json
+
+###
+
+### ============================================
+### EVENT FLOW TESTING
+### ============================================
+
+### Step 1: Create Employee in EmployeeService (triggers EmployeeCreatedEvent)
+POST {{EmployeeService_HostAddress}}/employees
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "role": "Software Engineer"
+}
+
+###
+### Step 2: Check SkillService logs - should see EmployeeCreatedEvent consumed
+### Step 3: Use the returned employeeId to rate skills above
+
+### ============================================
+### VALIDATION TESTS
+### ============================================
+
+### Test Invalid Skill Name (Empty)
+POST {{SkillService_HostAddress}}/skills
+Content-Type: application/json
+
+{
+  "skillName": ""
+}
+
+###
+
+### Test Invalid Rating (Out of Range)
+POST {{SkillService_HostAddress}}/employees/00000000-0000-0000-0000-000000000000/skills
+Content-Type: application/json
+
+{
+  "skillId": "11111111-1111-1111-1111-111111111111",
+  "rating": 6,
+  "trainingNeeded": false
+}
+
+###
+
+### Test Duplicate Skill Name
+POST {{SkillService_HostAddress}}/skills
+Content-Type: application/json
+
+{
+  "skillName": "C#"
+}
 
 ###

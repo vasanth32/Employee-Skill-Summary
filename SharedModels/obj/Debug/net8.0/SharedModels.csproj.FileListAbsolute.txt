@@ -10,3 +10,15 @@ P:\POC Projects\EmployeeSkillPoc\SharedModels\obj\Debug\net8.0\SharedModels.dll
 P:\POC Projects\EmployeeSkillPoc\SharedModels\obj\Debug\net8.0\refint\SharedModels.dll
 P:\POC Projects\EmployeeSkillPoc\SharedModels\obj\Debug\net8.0\SharedModels.pdb
 P:\POC Projects\EmployeeSkillPoc\SharedModels\obj\Debug\net8.0\ref\SharedModels.dll
+C:\poc\Employee-Skill-Summary\SharedModels\bin\Debug\net8.0\SharedModels.deps.json
+C:\poc\Employee-Skill-Summary\SharedModels\bin\Debug\net8.0\SharedModels.dll
+C:\poc\Employee-Skill-Summary\SharedModels\bin\Debug\net8.0\SharedModels.pdb
+C:\poc\Employee-Skill-Summary\SharedModels\obj\Debug\net8.0\SharedModels.GeneratedMSBuildEditorConfig.editorconfig
+C:\poc\Employee-Skill-Summary\SharedModels\obj\Debug\net8.0\SharedModels.AssemblyInfoInputs.cache
+C:\poc\Employee-Skill-Summary\SharedModels\obj\Debug\net8.0\SharedModels.AssemblyInfo.cs
+C:\poc\Employee-Skill-Summary\SharedModels\obj\Debug\net8.0\SharedModels.csproj.CoreCompileInputs.cache
+C:\poc\Employee-Skill-Summary\SharedModels\obj\Debug\net8.0\SharedModels.sourcelink.json
+C:\poc\Employee-Skill-Summary\SharedModels\obj\Debug\net8.0\SharedModels.dll
+C:\poc\Employee-Skill-Summary\SharedModels\obj\Debug\net8.0\refint\SharedModels.dll
+C:\poc\Employee-Skill-Summary\SharedModels\obj\Debug\net8.0\SharedModels.pdb
+C:\poc\Employee-Skill-Summary\SharedModels\obj\Debug\net8.0\ref\SharedModels.dll

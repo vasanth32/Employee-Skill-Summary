@@ -1,0 +1,743 @@
+{
+	"info": {
+		"_postman_id": "api-gateway-collection",
+		"name": "API Gateway - Complete Testing",
+		"description": "Complete testing collection for API Gateway with JWT authentication, reverse proxy routing, and claim forwarding",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authentication (No Token Required)",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Save token and user info to environment variables",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('authToken', response.token);",
+									"    pm.environment.set('userRole', response.role);",
+									"    pm.environment.set('userEmail', pm.request.body.raw ? JSON.parse(pm.request.body.raw).email : '');",
+									"    console.log('✅ User registered successfully');",
+									"    console.log('Token saved to environment variable');",
+									"    console.log('Role:', response.role);",
+									"} else {",
+									"    console.error('❌ Registration failed:', pm.response.text());",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Password123!\",\n  \"role\": \"User\"\n}"
+						},
+						"url": {
+							"raw": "{{gatewayUrl}}/auth/register",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user through the API Gateway.\n\n**Route:** `/auth/register` → AuthService\n**Authentication:** Not required\n\n**Expected:** 200 OK with token and role\n**Auto-Action:** Saves token to `authToken` environment variable"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Save token to environment variable",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('authToken', response.token);",
+									"    pm.environment.set('userRole', response.role);",
+									"    console.log('✅ Login successful');",
+									"    console.log('Token saved to environment variable');",
+									"    console.log('Role:', response.role);",
+									"} else {",
+									"    console.error('❌ Login failed:', pm.response.text());",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "{{gatewayUrl}}/auth/login",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login through the API Gateway.\n\n**Route:** `/auth/login` → AuthService\n**Authentication:** Not required\n\n**Expected:** 200 OK with token and role\n**Auto-Action:** Saves token to `authToken` environment variable"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints - no JWT token required"
+		},
+		{
+			"name": "2. Employee Management (Token Required)",
+			"item": [
+				{
+					"name": "Get All Employees",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Verify token is set",
+									"const token = pm.environment.get('authToken');",
+									"if (!token) {",
+									"    console.warn('⚠️  No auth token found. Please run Login or Register first.');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const employees = pm.response.json();",
+									"    if (employees.length > 0) {",
+									"        pm.environment.set('employeeId', employees[0].employeeId);",
+									"        console.log('✅ Employees retrieved:', employees.length);",
+									"        console.log('First employee ID saved:', employees[0].employeeId);",
+									"    }",
+									"} else if (pm.response.code === 401) {",
+									"    console.error('❌ Unauthorized - Token may be invalid or expired');",
+									"}",
+									"",
+									"// Check if X-User-Id header was forwarded (visible in response headers if service logs it)",
+									"console.log('Response status:', pm.response.code);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/employee/employees",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"employee",
+								"employees"
+							]
+						},
+						"description": "Get all employees through the API Gateway.\n\n**Route:** `/employee/employees` → EmployeeService\n**Authentication:** Required (JWT token)\n**Claim Forwarding:** X-User-Id, X-User-Email, X-User-Role headers forwarded to EmployeeService\n\n**Expected:** 200 OK with employee list"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('employeeId', response.employeeId);",
+									"    pm.environment.set('employeeName', response.name);",
+									"    pm.environment.set('employeeEmail', response.email);",
+									"    console.log('✅ Employee created:', response.employeeId);",
+									"    console.log('Check EmployeeService logs - should see X-User-Id header');",
+									"} else if (pm.response.code === 401) {",
+									"    console.error('❌ Unauthorized - Token required');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane.smith@example.com\",\n  \"role\": \"Senior Developer\"\n}"
+						},
+						"url": {
+							"raw": "{{gatewayUrl}}/employee/employees",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"employee",
+								"employees"
+							]
+						},
+						"description": "Create a new employee through the API Gateway.\n\n**Route:** `/employee/employees` → EmployeeService\n**Authentication:** Required (JWT token)\n**Claim Forwarding:** User claims forwarded as headers\n**Event:** Triggers EmployeeCreatedEvent (consumed by SkillService)\n\n**Expected:** 201 Created with employee details"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const employeeId = pm.environment.get('employeeId');",
+									"if (!employeeId) {",
+									"    console.warn('⚠️  employeeId not set. Run Create Employee or Get All Employees first.');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/employee/employees/{{employeeId}}",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"employee",
+								"employees",
+								"{{employeeId}}"
+							]
+						},
+						"description": "Get employee by ID through the API Gateway.\n\n**Route:** `/employee/employees/{id}` → EmployeeService\n**Authentication:** Required (JWT token)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Jane Smith Updated\",\n  \"email\": \"jane.smith.updated@example.com\",\n  \"role\": \"Lead Developer\"\n}"
+						},
+						"url": {
+							"raw": "{{gatewayUrl}}/employee/employees/{{employeeId}}",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"employee",
+								"employees",
+								"{{employeeId}}"
+							]
+						},
+						"description": "Update employee through the API Gateway.\n\n**Route:** `/employee/employees/{id}` → EmployeeService\n**Authentication:** Required (JWT token)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/employee/employees/{{employeeId}}",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"employee",
+								"employees",
+								"{{employeeId}}"
+							]
+						},
+						"description": "Delete employee through the API Gateway.\n\n**Route:** `/employee/employees/{id}` → EmployeeService\n**Authentication:** Required (JWT token)"
+					},
+					"response": []
+				}
+			],
+			"description": "Employee management endpoints - JWT token required"
+		},
+		{
+			"name": "3. Skills Management (Token Required)",
+			"item": [
+				{
+					"name": "Get All Skills",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const skills = pm.response.json();",
+									"    if (skills.length > 0) {",
+									"        // Save first skill ID (usually C#)",
+									"        pm.environment.set('skillId', skills[0].skillId);",
+									"        console.log('✅ Skills retrieved:', skills.length);",
+									"        console.log('First skill ID saved:', skills[0].skillId);",
+									"    }",
+									"} else if (pm.response.code === 401) {",
+									"    console.error('❌ Unauthorized - Token required');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/skills/skills",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"skills",
+								"skills"
+							]
+						},
+						"description": "Get all skills through the API Gateway.\n\n**Route:** `/skills/skills` → SkillService\n**Authentication:** Required (JWT token)\n**Claim Forwarding:** User claims forwarded as headers"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Skill",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"skillName\": \"TypeScript\"\n}"
+						},
+						"url": {
+							"raw": "{{gatewayUrl}}/skills/skills",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"skills",
+								"skills"
+							]
+						},
+						"description": "Create a new skill through the API Gateway.\n\n**Route:** `/skills/skills` → SkillService\n**Authentication:** Required (JWT token)"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Skills",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/skills/skills/search?skill=C%23&rating=3",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"skills",
+								"skills",
+								"search"
+							],
+							"query": [
+								{
+									"key": "skill",
+									"value": "C#"
+								},
+								{
+									"key": "rating",
+									"value": "3"
+								}
+							]
+						},
+						"description": "Search skills through the API Gateway.\n\n**Route:** `/skills/skills/search` → SkillService\n**Authentication:** Required (JWT token)\n**Query Parameters:**\n- `skill`: Skill name (optional)\n- `rating`: Minimum rating (optional)"
+					},
+					"response": []
+				}
+			],
+			"description": "Skills management endpoints - JWT token required"
+		},
+		{
+			"name": "4. Employee Skills (Token Required)",
+			"item": [
+				{
+					"name": "Rate Employee Skill",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const employeeId = pm.environment.get('employeeId');",
+									"const skillId = pm.environment.get('skillId');",
+									"if (!employeeId || !skillId) {",
+									"    console.warn('⚠️  employeeId or skillId not set. Run Get All Employees and Get All Skills first.');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    console.log('✅ Skill rated successfully');",
+									"    console.log('Check SkillService logs - should see X-User-Id header');",
+									"    console.log('Check RabbitMQ - SkillRatedEvent should be published');",
+									"} else if (pm.response.code === 401) {",
+									"    console.error('❌ Unauthorized - Token required');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"skillId\": \"{{skillId}}\",\n  \"rating\": 4,\n  \"trainingNeeded\": false\n}"
+						},
+						"url": {
+							"raw": "{{gatewayUrl}}/skills/employees/{{employeeId}}/skills",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"skills",
+								"employees",
+								"{{employeeId}}",
+								"skills"
+							]
+						},
+						"description": "Rate a skill for an employee through the API Gateway.\n\n**Route:** `/skills/employees/{employeeId}/skills` → SkillService\n**Authentication:** Required (JWT token)\n**Event:** Publishes SkillRatedEvent to RabbitMQ\n**Claim Forwarding:** User claims forwarded as headers"
+					},
+					"response": []
+				}
+			],
+			"description": "Employee skills rating endpoints - JWT token required"
+		},
+		{
+			"name": "5. Search Service (Token Required)",
+			"item": [
+				{
+					"name": "Search Endpoint (Placeholder)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/search",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"search"
+							]
+						},
+						"description": "Search service endpoint through the API Gateway.\n\n**Route:** `/search/*` → SearchService\n**Authentication:** Required (JWT token)\n**Note:** SearchService implementation pending"
+					},
+					"response": []
+				}
+			],
+			"description": "Search service endpoints - JWT token required"
+		},
+		{
+			"name": "6. JWT Validation Tests",
+			"item": [
+				{
+					"name": "Access Protected Route Without Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 401) {",
+									"    console.log('✅ Correctly rejected - 401 Unauthorized');",
+									"    console.log('Gateway is validating JWT tokens correctly');",
+									"} else {",
+									"    console.error('❌ Expected 401, got:', pm.response.code);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/employee/employees",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"employee",
+								"employees"
+							]
+						},
+						"description": "Test that gateway rejects requests without JWT token.\n\n**Expected:** 401 Unauthorized"
+					},
+					"response": []
+				},
+				{
+					"name": "Access Protected Route With Invalid Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 401) {",
+									"    console.log('✅ Correctly rejected invalid token - 401 Unauthorized');",
+									"} else {",
+									"    console.error('❌ Expected 401, got:', pm.response.code);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "invalid.token.here",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/employee/employees",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"employee",
+								"employees"
+							]
+						},
+						"description": "Test that gateway rejects requests with invalid JWT token.\n\n**Expected:** 401 Unauthorized"
+					},
+					"response": []
+				},
+				{
+					"name": "Access Public Route Without Token (Should Work)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 400) {",
+									"    console.log('✅ Public route accessible without token');",
+									"    console.log('Gateway correctly allows unauthenticated access to /auth/* routes');",
+									"} else {",
+									"    console.error('❌ Unexpected response:', pm.response.code);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"test\"\n}"
+						},
+						"url": {
+							"raw": "{{gatewayUrl}}/auth/login",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Test that public routes (/auth/*) are accessible without token.\n\n**Expected:** 200 OK (if credentials valid) or 401 (if invalid)"
+					},
+					"response": []
+				}
+			],
+			"description": "Tests to verify JWT validation at gateway level"
+		}
+	],
+	"variable": [
+		{
+			"key": "gatewayUrl",
+			"value": "http://localhost:5112",
+			"type": "string"
+		},
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+

@@ -68,3 +68,6 @@ C:\poc\Employee-Skill-Summary\ApiGateway\obj\Debug\net8.0\refint\ApiGateway.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\obj\Debug\net8.0\ApiGateway.pdb
 C:\poc\Employee-Skill-Summary\ApiGateway\obj\Debug\net8.0\ApiGateway.genruntimeconfig.cache
 C:\poc\Employee-Skill-Summary\ApiGateway\obj\Debug\net8.0\ref\ApiGateway.dll
+C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

@@ -6,6 +6,7 @@ C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\ApiGateway.runtimeconf
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\ApiGateway.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\ApiGateway.pdb
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\FluentValidation.dll
+C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
@@ -23,6 +24,8 @@ C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.Extensions.P
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\RabbitMQ.Client.dll
@@ -68,6 +71,3 @@ C:\poc\Employee-Skill-Summary\ApiGateway\obj\Debug\net8.0\refint\ApiGateway.dll
 C:\poc\Employee-Skill-Summary\ApiGateway\obj\Debug\net8.0\ApiGateway.pdb
 C:\poc\Employee-Skill-Summary\ApiGateway\obj\Debug\net8.0\ApiGateway.genruntimeconfig.cache
 C:\poc\Employee-Skill-Summary\ApiGateway\obj\Debug\net8.0\ref\ApiGateway.dll
-C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
-C:\poc\Employee-Skill-Summary\ApiGateway\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

@@ -203,13 +203,42 @@ The collection uses environment variables. Create a Postman Environment:
 
 ### Step 5: Search Service (Token Required)
 
-#### 5.1 Search Endpoint
-**Request:** `5. Search Service > Search Endpoint (Placeholder)`
+#### 5.1 Search by Skill Name
+**Request:** `5. Search Service > Search by Skill Name`
 
-- **Purpose:** Test SearchService routing through gateway
-- **Route:** `/search/*` → SearchService
-- **Authentication:** Required
-- **Note:** SearchService implementation pending - this is a placeholder
+- **Purpose:** Search employees by skill name through gateway
+- **Route:** `/search/search?skill={name}` → SearchService
+- **Authentication:** Required (JWT token)
+- **Query Parameters:**
+  - `skill`: Skill name (e.g., "C#", "Java")
+- **Expected:** 200 OK with list of employees who have the skill
+- **Note:** This reads from SearchService's local read database (CQRS pattern)
+
+#### 5.2 Search by Minimum Rating
+**Request:** `5. Search Service > Search by Minimum Rating`
+
+- **Purpose:** Search employees by minimum rating
+- **Route:** `/search/search?minRating={rating}` → SearchService
+- **Authentication:** Required (JWT token)
+- **Query Parameters:**
+  - `minRating`: Minimum rating (1-5)
+- **Expected:** 200 OK with employees who have skills rated >= minRating
+
+#### 5.3 Search by Skill and Rating
+**Request:** `5. Search Service > Search by Skill and Rating`
+
+- **Purpose:** Combined search with both skill and rating filters
+- **Route:** `/search/search?skill={name}&minRating={rating}` → SearchService
+- **Authentication:** Required (JWT token)
+- **Expected:** 200 OK with employees matching both criteria
+
+#### 5.4 Search All (No Filters)
+**Request:** `5. Search Service > Search All (No Filters)`
+
+- **Purpose:** Get all employee-skill combinations
+- **Route:** `/search/search` → SearchService
+- **Authentication:** Required (JWT token)
+- **Expected:** 200 OK with all data from read database - this is a placeholder
 
 ---
 

@@ -12,6 +12,10 @@ This folder contains Postman collections for testing the Employee Skill Summary 
 - **SkillService_Collection.json** - Complete Postman collection for SkillService event-driven flow
 - **POSTMAN_TESTING_GUIDE.md** - Detailed step-by-step testing guide for SkillService
 
+### SearchService Testing
+- **SEARCH_SERVICE_TESTING_GUIDE.md** - Complete guide for testing SearchService CQRS read model
+- Search endpoints are included in the API Gateway collection under "5. Search Service"
+
 ## Quick Start
 
 ### API Gateway Collection

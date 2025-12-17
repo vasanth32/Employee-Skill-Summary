@@ -567,7 +567,26 @@
 			"name": "5. Search Service (Token Required)",
 			"item": [
 				{
-					"name": "Search Endpoint (Placeholder)",
+					"name": "Search by Skill Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const results = pm.response.json();",
+									"    console.log('✅ Search successful - found', results.length, 'results');",
+									"    if (results.length > 0) {",
+									"        console.log('Sample result:', results[0]);",
+									"    }",
+									"} else if (pm.response.code === 401) {",
+									"    console.error('❌ Unauthorized - Token required');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -582,20 +601,180 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{gatewayUrl}}/search",
+							"raw": "{{gatewayUrl}}/search/search?skill=C%23",
 							"host": [
 								"{{gatewayUrl}}"
 							],
 							"path": [
+								"search",
+								"search"
+							],
+							"query": [
+								{
+									"key": "skill",
+									"value": "C#"
+								}
+							]
+						},
+						"description": "Search employees by skill name through the API Gateway.\n\n**Route:** `/search/search?skill={name}` → SearchService\n**Authentication:** Required (JWT token)\n**Query Parameters:**\n- `skill`: Skill name (e.g., \"C#\", \"Java\", \"Python\")\n\n**Note:** This reads from SearchService's local read database (CQRS pattern). Results are independent of EmployeeService and SkillService."
+					},
+					"response": []
+				},
+				{
+					"name": "Search by Minimum Rating",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const results = pm.response.json();",
+									"    console.log('✅ Search successful - found', results.length, 'results with rating >= 4');",
+									"} else if (pm.response.code === 401) {",
+									"    console.error('❌ Unauthorized - Token required');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/search/search?minRating=4",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"search",
+								"search"
+							],
+							"query": [
+								{
+									"key": "minRating",
+									"value": "4"
+								}
+							]
+						},
+						"description": "Search employees by minimum rating through the API Gateway.\n\n**Route:** `/search/search?minRating={rating}` → SearchService\n**Authentication:** Required (JWT token)\n**Query Parameters:**\n- `minRating`: Minimum rating (1-5)\n\n**Returns:** All employees with skills rated at or above the minimum rating."
+					},
+					"response": []
+				},
+				{
+					"name": "Search by Skill and Rating",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const results = pm.response.json();",
+									"    console.log('✅ Search successful - found', results.length, 'results');",
+									"    console.log('Search criteria: C# skill with rating >= 3');",
+									"} else if (pm.response.code === 401) {",
+									"    console.error('❌ Unauthorized - Token required');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/search/search?skill=C%23&minRating=3",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"search",
+								"search"
+							],
+							"query": [
+								{
+									"key": "skill",
+									"value": "C#"
+								},
+								{
+									"key": "minRating",
+									"value": "3"
+								}
+							]
+						},
+						"description": "Search employees by both skill name and minimum rating through the API Gateway.\n\n**Route:** `/search/search?skill={name}&minRating={rating}` → SearchService\n**Authentication:** Required (JWT token)\n**Query Parameters:**\n- `skill`: Skill name (optional)\n- `minRating`: Minimum rating (optional)\n\n**Returns:** Employees matching both criteria (AND condition)."
+					},
+					"response": []
+				},
+				{
+					"name": "Search All (No Filters)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const results = pm.response.json();",
+									"    console.log('✅ Search successful - found', results.length, 'total results');",
+									"    console.log('This returns all employee-skill combinations from the read database');",
+									"} else if (pm.response.code === 401) {",
+									"    console.error('❌ Unauthorized - Token required');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{authToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayUrl}}/search/search",
+							"host": [
+								"{{gatewayUrl}}"
+							],
+							"path": [
+								"search",
 								"search"
 							]
 						},
-						"description": "Search service endpoint through the API Gateway.\n\n**Route:** `/search/*` → SearchService\n**Authentication:** Required (JWT token)\n**Note:** SearchService implementation pending"
+						"description": "Get all employee-skill combinations from SearchService read database.\n\n**Route:** `/search/search` → SearchService\n**Authentication:** Required (JWT token)\n**Returns:** All employee-skill combinations (no filters applied)."
 					},
 					"response": []
 				}
 			],
-			"description": "Search service endpoints - JWT token required"
+			"description": "Search service endpoints - JWT token required. These endpoints read from SearchService's local read database (CQRS pattern)."
 		},
 		{
 			"name": "6. JWT Validation Tests",
@@ -740,4 +919,3 @@
 		}
 	]
 }
-

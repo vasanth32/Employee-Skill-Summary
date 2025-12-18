@@ -1,0 +1,19 @@
+2025-12-18 15:36:31.229 +05:30 [INF] User profile is available. Using 'C:\Users\vasan\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-18 15:36:32.165 +05:30 [INF] Now listening on: http://localhost:5163
+2025-12-18 15:36:32.181 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-18 15:36:32.190 +05:30 [INF] Hosting environment: Development
+2025-12-18 15:36:32.198 +05:30 [INF] Content root path: C:\poc\Employee-Skill-Summary\AuthService
+2025-12-18 15:38:47.020 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5163/auth/login - application/json 67
+2025-12-18 15:38:47.147 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-12-18 15:38:47.272 +05:30 [INF] Executing endpoint 'AuthService.Controllers.AuthController.Login (AuthService)'
+2025-12-18 15:38:47.421 +05:30 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(AuthService.Models.LoginRequest, System.Threading.CancellationToken) on controller AuthService.Controllers.AuthController (AuthService).
+2025-12-18 15:38:52.394 +05:30 [INF] Executed DbCommand (250ms) [Parameters=[@__request_Email_0='?' (Size = 255)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[UserId], [u].[Email], [u].[Name], [u].[PasswordHash], [u].[Role]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @__request_Email_0
+2025-12-18 15:38:53.120 +05:30 [INF] Executing OkObjectResult, writing value of type 'AuthService.Models.AuthResponse'.
+2025-12-18 15:38:53.195 +05:30 [INF] Executed action AuthService.Controllers.AuthController.Login (AuthService) in 5748.2642ms
+2025-12-18 15:38:53.204 +05:30 [INF] Executed endpoint 'AuthService.Controllers.AuthController.Login (AuthService)'
+2025-12-18 15:38:53.218 +05:30 [INF] HTTP POST /auth/login responded 200 in 6074.1045 ms
+2025-12-18 15:38:53.282 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5163/auth/login - 200 null application/json; charset=utf-8 6262.9219ms
+2025-12-18 15:43:45.211 +05:30 [INF] Application is shutting down...

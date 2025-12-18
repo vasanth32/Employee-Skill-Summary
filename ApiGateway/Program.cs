@@ -1,10 +1,24 @@
 using System.Security.Claims;
 using System.Text;
+using ApiGateway.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using Yarp.ReverseProxy.Transforms;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, loggerConfiguration) =>
+{
+    loggerConfiguration
+        .ReadFrom.Configuration(context.Configuration)
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .WriteTo.File(
+            path: "Logs/apigateway-.log",
+            rollingInterval: RollingInterval.Day,
+            retainedFileCountLimit: 7);
+});
 
 // Configure JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -36,10 +50,20 @@ builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
     .AddTransforms(transformBuilderContext =>
     {
-        // Custom transform to forward user claims as headers for all routes
+        // Custom transform to forward user claims and correlation id as headers for all routes
         transformBuilderContext.AddRequestTransform(transformContext =>
         {
             var user = transformContext.HttpContext.User;
+
+            // Forward correlation id
+            var correlationIdHeader = transformContext.HttpContext.Request.Headers[CorrelationIdMiddleware.HeaderName].FirstOrDefault()
+                                      ?? transformContext.HttpContext.TraceIdentifier;
+            if (!string.IsNullOrEmpty(correlationIdHeader))
+            {
+                transformContext.ProxyRequest.Headers.Remove(CorrelationIdMiddleware.HeaderName);
+                transformContext.ProxyRequest.Headers.TryAddWithoutValidation(CorrelationIdMiddleware.HeaderName, correlationIdHeader);
+            }
+
             if (user.Identity?.IsAuthenticated == true)
             {
                 // Extract claims from JWT token
@@ -85,6 +109,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseGlobalExceptionHandling();
+app.UseCorrelationId();
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

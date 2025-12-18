@@ -1,0 +1,48 @@
+2025-12-18 15:37:49.029 +05:30 [INF] User profile is available. Using 'C:\Users\vasan\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-18 15:37:49.283 +05:30 [INF] Loading proxy data from config.
+2025-12-18 15:37:49.688 +05:30 [INF] Now listening on: http://localhost:5112
+2025-12-18 15:37:49.695 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-18 15:37:49.700 +05:30 [INF] Hosting environment: Development
+2025-12-18 15:37:49.702 +05:30 [INF] Content root path: C:\poc\Employee-Skill-Summary\ApiGateway
+2025-12-18 15:38:46.172 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5112/auth/login - application/json 67
+2025-12-18 15:38:46.405 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-12-18 15:38:46.579 +05:30 [INF] Executing endpoint 'auth-route'
+2025-12-18 15:38:46.822 +05:30 [INF] Proxying to http://localhost:5163/auth/login HTTP/2 RequestVersionOrLower 
+2025-12-18 15:38:53.205 +05:30 [INF] Received HTTP/1.1 response 200.
+2025-12-18 15:38:53.283 +05:30 [INF] Executed endpoint 'auth-route'
+2025-12-18 15:38:53.301 +05:30 [INF] HTTP POST /auth/login responded 200 in 6887.5238 ms
+2025-12-18 15:38:53.328 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5112/auth/login - 200 null application/json; charset=utf-8 7164.3012ms
+2025-12-18 15:39:15.933 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5112/employee/employees - null null
+2025-12-18 15:39:16.326 +05:30 [INF] Executing endpoint 'employee-route'
+2025-12-18 15:39:16.586 +05:30 [INF] Proxying to http://localhost:5110/employees HTTP/2 RequestVersionOrLower 
+2025-12-18 15:39:23.464 +05:30 [INF] Received HTTP/1.1 response 200.
+2025-12-18 15:39:23.538 +05:30 [INF] Executed endpoint 'employee-route'
+2025-12-18 15:39:23.545 +05:30 [INF] HTTP GET /employee/employees responded 200 in 7580.6710 ms
+2025-12-18 15:39:23.553 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5112/employee/employees - 200 null application/json; charset=utf-8 7621.4018ms
+2025-12-18 15:39:42.058 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5112/skills/skills - null null
+2025-12-18 15:39:42.078 +05:30 [INF] Executing endpoint 'skills-route'
+2025-12-18 15:39:42.083 +05:30 [INF] Proxying to http://localhost:5212/skills HTTP/2 RequestVersionOrLower 
+2025-12-18 15:39:46.675 +05:30 [INF] Received HTTP/1.1 response 200.
+2025-12-18 15:39:46.737 +05:30 [INF] Executed endpoint 'skills-route'
+2025-12-18 15:39:46.744 +05:30 [INF] HTTP GET /skills/skills responded 200 in 4673.3358 ms
+2025-12-18 15:39:46.758 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5112/skills/skills - 200 null application/json; charset=utf-8 4700.4764ms
+2025-12-18 15:40:07.540 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5112/skills/employees/{{employeeId}}/skills - application/json 97
+2025-12-18 15:40:07.554 +05:30 [INF] Executing endpoint 'skills-route'
+2025-12-18 15:40:07.566 +05:30 [INF] Proxying to http://localhost:5212/employees/%7B%7BemployeeId%7D%7D/skills HTTP/2 RequestVersionOrLower 
+2025-12-18 15:40:07.603 +05:30 [INF] Received HTTP/1.1 response 404.
+2025-12-18 15:40:07.606 +05:30 [INF] Executed endpoint 'skills-route'
+2025-12-18 15:40:07.611 +05:30 [INF] HTTP POST /skills/employees/{{employeeId}}/skills responded 404 in 60.4685 ms
+2025-12-18 15:40:07.621 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5112/skills/employees/{{employeeId}}/skills - 404 0 null 80.4461ms
+2025-12-18 15:40:32.053 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5112/search/search - null null
+2025-12-18 15:40:32.064 +05:30 [INF] Executing endpoint 'search-route'
+2025-12-18 15:40:32.069 +05:30 [INF] Proxying to http://localhost:5234/search HTTP/2 RequestVersionOrLower 
+2025-12-18 15:40:37.521 +05:30 [INF] Received HTTP/1.1 response 200.
+2025-12-18 15:40:37.607 +05:30 [INF] Executed endpoint 'search-route'
+2025-12-18 15:40:37.611 +05:30 [INF] HTTP GET /search/search responded 200 in 5547.5713 ms
+2025-12-18 15:40:37.619 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5112/search/search - 200 null application/json; charset=utf-8 5566.2322ms
+2025-12-18 15:40:52.995 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5112/employee/employees - null null
+2025-12-18 15:40:53.006 +05:30 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-12-18 15:40:53.022 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2025-12-18 15:40:53.027 +05:30 [INF] HTTP GET /employee/employees responded 401 in 22.9103 ms
+2025-12-18 15:40:53.036 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5112/employee/employees - 401 0 null 40.7833ms

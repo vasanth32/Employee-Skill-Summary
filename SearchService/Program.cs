@@ -1,9 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using SearchService.Data;
 using SearchService.Messaging;
+using SearchService.Middleware;
 using SearchService.Repositories;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, loggerConfiguration) =>
+{
+    loggerConfiguration
+        .ReadFrom.Configuration(context.Configuration)
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .WriteTo.File(
+            path: "Logs/searchservice-.log",
+            rollingInterval: RollingInterval.Day,
+            retainedFileCountLimit: 7);
+});
 
 // Add Entity Framework
 builder.Services.AddDbContext<SearchDbContext>(options =>
@@ -30,6 +44,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseGlobalExceptionHandling();
+app.UseCorrelationId();
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

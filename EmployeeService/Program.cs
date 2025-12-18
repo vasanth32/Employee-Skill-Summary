@@ -1,11 +1,25 @@
 using EmployeeService.Data;
 using EmployeeService.Messaging;
+using EmployeeService.Middleware;
 using EmployeeService.Repositories;
 using EmployeeService.Services;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, loggerConfiguration) =>
+{
+    loggerConfiguration
+        .ReadFrom.Configuration(context.Configuration)
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .WriteTo.File(
+            path: "Logs/employeeservice-.log",
+            rollingInterval: RollingInterval.Day,
+            retainedFileCountLimit: 7);
+});
 
 builder.Services.AddDbContext<EmployeeDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeDatabase")));
@@ -26,6 +40,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseGlobalExceptionHandling();
+app.UseCorrelationId();
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

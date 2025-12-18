@@ -1,0 +1,21 @@
+2025-12-18 15:37:31.632 +05:30 [INF] EmployeeCreatedEvent consumer started. Waiting for messages...
+2025-12-18 15:37:31.700 +05:30 [INF] Now listening on: http://localhost:5212
+2025-12-18 15:37:31.705 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-18 15:37:31.709 +05:30 [INF] Hosting environment: Development
+2025-12-18 15:37:31.712 +05:30 [INF] Content root path: C:\poc\Employee-Skill-Summary\SkillService
+2025-12-18 15:39:42.243 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5212/skills - null null
+2025-12-18 15:39:42.392 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-12-18 15:39:42.407 +05:30 [INF] Executing endpoint 'SkillService.Controllers.SkillsController.GetAll (SkillService)'
+2025-12-18 15:39:42.481 +05:30 [INF] Route matched with {action = "GetAll", controller = "Skills"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[SkillService.Models.SkillResponse]]] GetAll(System.Threading.CancellationToken) on controller SkillService.Controllers.SkillsController (SkillService).
+2025-12-18 15:39:46.303 +05:30 [INF] Executed DbCommand (69ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[SkillId], [s].[SkillName]
+FROM [Skills] AS [s]
+2025-12-18 15:39:46.427 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[SkillService.Models.SkillResponse, SkillService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-18 15:39:46.688 +05:30 [INF] Executed action SkillService.Controllers.SkillsController.GetAll (SkillService) in 4188.7998ms
+2025-12-18 15:39:46.702 +05:30 [INF] Executed endpoint 'SkillService.Controllers.SkillsController.GetAll (SkillService)'
+2025-12-18 15:39:46.717 +05:30 [INF] HTTP GET /skills responded 200 in 4327.2484 ms
+2025-12-18 15:39:46.786 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5212/skills - 200 null application/json; charset=utf-8 4539.3277ms
+2025-12-18 15:40:07.578 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5212/employees/{{employeeId}}/skills - application/json 97
+2025-12-18 15:40:07.596 +05:30 [INF] HTTP POST /employees/{{employeeId}}/skills responded 404 in 0.6316 ms
+2025-12-18 15:40:07.603 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5212/employees/{{employeeId}}/skills - 404 0 null 26.5623ms
+2025-12-18 15:40:07.620 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5212/employees/%7B%7BemployeeId%7D%7D/skills, Response status code: 404

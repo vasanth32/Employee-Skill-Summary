@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SkillService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+943f2c6eb5fa91491e5f899490970bf90d16c634")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ecb73fe8a4e1c1201c7d1ca88d6ef0283b16873")]
 [assembly: System.Reflection.AssemblyProductAttribute("SkillService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SkillService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

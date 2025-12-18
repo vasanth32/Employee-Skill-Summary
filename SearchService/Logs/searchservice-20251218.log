@@ -1,0 +1,21 @@
+2025-12-18 15:37:13.548 +05:30 [INF] EmployeeCreatedEvent consumer started. Waiting for messages...
+2025-12-18 15:37:13.548 +05:30 [INF] SkillRatedEvent consumer started. Waiting for messages...
+2025-12-18 15:37:13.700 +05:30 [INF] Now listening on: http://localhost:5234
+2025-12-18 15:37:13.708 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-18 15:37:13.713 +05:30 [INF] Hosting environment: Development
+2025-12-18 15:37:13.717 +05:30 [INF] Content root path: C:\poc\Employee-Skill-Summary\SearchService
+2025-12-18 15:40:32.232 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5234/search - null null
+2025-12-18 15:40:32.357 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-12-18 15:40:32.368 +05:30 [INF] Executing endpoint 'SearchService.Controllers.SearchController.Search (SearchService)'
+2025-12-18 15:40:32.472 +05:30 [INF] Route matched with {action = "Search", controller = "Search"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[SearchService.Models.SearchResult]]] Search(System.String, System.Nullable`1[System.Int32], System.Threading.CancellationToken) on controller SearchService.Controllers.SearchController (SearchService).
+2025-12-18 15:40:32.872 +05:30 [INF] Search request: skill=null, minRating=null
+2025-12-18 15:40:37.053 +05:30 [INF] Executed DbCommand (366ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [e].[EmployeeId], [e].[Name], [e].[Role], [e0].[SkillName], [e0].[Rating]
+FROM [EmployeeSummaries] AS [e]
+INNER JOIN [EmployeeSummarySkills] AS [e0] ON [e].[SummaryId] = [e0].[SummaryId]
+2025-12-18 15:40:37.243 +05:30 [INF] Search returned 1 results
+2025-12-18 15:40:37.267 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[SearchService.Models.SearchResult, SearchService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-18 15:40:37.543 +05:30 [INF] Executed action SearchService.Controllers.SearchController.Search (SearchService) in 5041.3626ms
+2025-12-18 15:40:37.564 +05:30 [INF] Executed endpoint 'SearchService.Controllers.SearchController.Search (SearchService)'
+2025-12-18 15:40:37.589 +05:30 [INF] HTTP GET /search responded 200 in 5226.7230 ms
+2025-12-18 15:40:37.633 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5234/search - 200 null application/json; charset=utf-8 5407.2809ms

@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: employeeskill-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrong@Passw0rd"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - employeeskill-network
+
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: employeeskill-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - employeeskill-network
+
+  # AuthService
+  authservice:
+    build:
+      context: .
+      dockerfile: AuthService/Dockerfile
+    container_name: employeeskill-authservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:80
+    ports:
+      - "5163:80"
+    depends_on:
+      - sqlserver
+    networks:
+      - employeeskill-network
+
+  # EmployeeService
+  employeeservice:
+    build:
+      context: .
+      dockerfile: EmployeeService/Dockerfile
+    container_name: employeeskill-employeeservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:80
+    ports:
+      - "5110:80"
+    depends_on:
+      - sqlserver
+      - rabbitmq
+    networks:
+      - employeeskill-network
+
+  # SkillService
+  skillservice:
+    build:
+      context: .
+      dockerfile: SkillService/Dockerfile
+    container_name: employeeskill-skillservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:80
+    ports:
+      - "5212:80"
+    depends_on:
+      - sqlserver
+      - rabbitmq
+    networks:
+      - employeeskill-network
+
+  # SearchService
+  searchservice:
+    build:
+      context: .
+      dockerfile: SearchService/Dockerfile
+    container_name: employeeskill-searchservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:80
+    ports:
+      - "5234:80"
+    depends_on:
+      - sqlserver
+      - rabbitmq
+    networks:
+      - employeeskill-network
+
+  # API Gateway
+  apigateway:
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    container_name: employeeskill-apigateway
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:80
+    ports:
+      - "5112:80"
+    depends_on:
+      - authservice
+      - employeeservice
+      - skillservice
+      - searchservice
+    networks:
+      - employeeskill-network
+
+volumes:
+  sqlserver-data:
+  rabbitmq-data:
+
+
+networks:
+  employeeskill-network:
+    driver: bridge

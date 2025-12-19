@@ -168,3 +168,4 @@ C:\poc\Employee-Skill-Summary\EmployeeService\obj\Debug\net8.0\refint\EmployeeSe
 C:\poc\Employee-Skill-Summary\EmployeeService\obj\Debug\net8.0\EmployeeService.pdb
 C:\poc\Employee-Skill-Summary\EmployeeService\obj\Debug\net8.0\EmployeeService.genruntimeconfig.cache
 C:\poc\Employee-Skill-Summary\EmployeeService\obj\Debug\net8.0\ref\EmployeeService.dll
+C:\poc\Employee-Skill-Summary\EmployeeService\bin\Debug\net8.0\appsettings.Docker.json

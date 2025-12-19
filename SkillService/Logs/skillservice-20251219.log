@@ -1,0 +1,99 @@
+2025-12-19 11:13:46.292 +05:30 [INF] Executed DbCommand (34ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-19 11:13:46.485 +05:30 [INF] Executed DbCommand (42ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-19 11:13:46.492 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-19 11:13:46.494 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-19 11:13:46.581 +05:30 [INF] Executed DbCommand (38ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-12-19 11:13:46.615 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-12-19 12:04:32.245 +05:30 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-19 12:04:32.417 +05:30 [INF] Executed DbCommand (50ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-19 12:04:32.424 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-19 12:04:32.427 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-19 12:04:32.491 +05:30 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-12-19 12:04:32.516 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-12-19 12:06:38.703 +05:30 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-19 12:06:38.813 +05:30 [INF] Executed DbCommand (27ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-19 12:06:38.818 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-19 12:06:38.980 +05:30 [INF] Executed DbCommand (21ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2025-12-19 12:06:38.984 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-19 12:06:38.989 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-19 12:06:39.000 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-12-19 12:06:39.021 +05:30 [INF] Applying migration '20251214065222_InitialCreate'.
+2025-12-19 12:06:39.167 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [EmployeeReferences] (
+    [EmployeeId] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Email] nvarchar(255) NOT NULL,
+    [Role] nvarchar(50) NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_EmployeeReferences] PRIMARY KEY ([EmployeeId])
+);
+2025-12-19 12:06:39.180 +05:30 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Skills] (
+    [SkillId] uniqueidentifier NOT NULL,
+    [SkillName] nvarchar(100) NOT NULL,
+    CONSTRAINT [PK_Skills] PRIMARY KEY ([SkillId])
+);
+2025-12-19 12:06:39.200 +05:30 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [EmployeeSkills] (
+    [EmployeeSkillId] uniqueidentifier NOT NULL,
+    [EmployeeId] uniqueidentifier NOT NULL,
+    [SkillId] uniqueidentifier NOT NULL,
+    [Rating] int NOT NULL,
+    [TrainingNeeded] bit NOT NULL,
+    CONSTRAINT [PK_EmployeeSkills] PRIMARY KEY ([EmployeeSkillId]),
+    CONSTRAINT [FK_EmployeeSkills_Skills_SkillId] FOREIGN KEY ([SkillId]) REFERENCES [Skills] ([SkillId]) ON DELETE CASCADE
+);
+2025-12-19 12:06:39.415 +05:30 [INF] Executed DbCommand (214ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'SkillId', N'SkillName') AND [object_id] = OBJECT_ID(N'[Skills]'))
+    SET IDENTITY_INSERT [Skills] ON;
+INSERT INTO [Skills] ([SkillId], [SkillName])
+VALUES ('11111111-1111-1111-1111-111111111111', N'C#'),
+('22222222-2222-2222-2222-222222222222', N'Java'),
+('33333333-3333-3333-3333-333333333333', N'Python'),
+('44444444-4444-4444-4444-444444444444', N'JavaScript'),
+('55555555-5555-5555-5555-555555555555', N'SQL'),
+('66666666-6666-6666-6666-666666666666', N'React'),
+('77777777-7777-7777-7777-777777777777', N'Angular'),
+('88888888-8888-8888-8888-888888888888', N'Node.js'),
+('99999999-9999-9999-9999-999999999999', N'Docker'),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', N'Kubernetes');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'SkillId', N'SkillName') AND [object_id] = OBJECT_ID(N'[Skills]'))
+    SET IDENTITY_INSERT [Skills] OFF;
+2025-12-19 12:06:39.433 +05:30 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_EmployeeReferences_EmployeeId] ON [EmployeeReferences] ([EmployeeId]);
+2025-12-19 12:06:39.440 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_EmployeeSkills_EmployeeId_SkillId] ON [EmployeeSkills] ([EmployeeId], [SkillId]);
+2025-12-19 12:06:39.449 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_EmployeeSkills_SkillId] ON [EmployeeSkills] ([SkillId]);
+2025-12-19 12:06:39.597 +05:30 [INF] Executed DbCommand (148ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Skills_SkillName] ON [Skills] ([SkillName]);
+2025-12-19 12:06:39.610 +05:30 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251214065222_InitialCreate', N'8.0.7');

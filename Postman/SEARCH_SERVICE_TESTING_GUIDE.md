@@ -302,3 +302,6 @@ JOIN EmployeeSummarySkills s ON e.SummaryId = s.SummaryId;
 
 
 
+
+
+

@@ -167,3 +167,4 @@ C:\poc\Employee-Skill-Summary\AuthService\obj\Debug\net8.0\refint\AuthService.dl
 C:\poc\Employee-Skill-Summary\AuthService\obj\Debug\net8.0\AuthService.pdb
 C:\poc\Employee-Skill-Summary\AuthService\obj\Debug\net8.0\AuthService.genruntimeconfig.cache
 C:\poc\Employee-Skill-Summary\AuthService\obj\Debug\net8.0\ref\AuthService.dll
+C:\poc\Employee-Skill-Summary\AuthService\bin\Debug\net8.0\appsettings.Docker.json
